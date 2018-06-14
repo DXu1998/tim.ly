@@ -40,6 +40,8 @@ class SettingsViewController: UIViewController {
         
         // TODO read settings values from pList and set switches and counters appropriately
         
+        // This is a test comment for git commits
+        
     }
 
     override func didReceiveMemoryWarning() {
