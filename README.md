@@ -10,3 +10,4 @@ Basic functionality is pomodoro timer, but planned features include:
   <li>Live syncing across devices
   <li>Todoist integration
   <li>Statistical analyses for time tracking nerds
+  <li>Continued functioning of timer when app is closed
