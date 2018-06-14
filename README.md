@@ -7,6 +7,6 @@ Basic functionality is pomodoro timer, but planned features include
 
 <ul>
 
-  <li>Live syncing across devices<\li>
-  <li>Todoist integration<\li>
-  <li>Statistical analyses for time tracking nerds<\li>
+  <li>Live syncing across devices
+  <li>Todoist integration
+  <li>Statistical analyses for time tracking nerds
