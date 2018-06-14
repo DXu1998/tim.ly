@@ -3,7 +3,7 @@ Pomodoro timer app
 
 An app I'm creating as a summer project to learn iOS development
 
-Basic functionality is pomodoro timer, but planned features include
+Basic functionality is pomodoro timer, but planned features include:
 
 <ul>
 
