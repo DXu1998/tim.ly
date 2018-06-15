@@ -14,6 +14,7 @@
 		73011DDB20C376460007EF19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73011DDA20C376460007EF19 /* Assets.xcassets */; };
 		73011DDE20C376460007EF19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73011DDC20C376460007EF19 /* LaunchScreen.storyboard */; };
 		73C8B2DB20D0C561000FCB2F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8B2DA20D0C561000FCB2F /* SettingsViewController.swift */; };
+		73C8B2DF20D32D65000FCB2F /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73C8B2DE20D32D65000FCB2F /* config.plist */; };
 		73C90A2920C88014003A3923 /* Pomodoro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C90A2820C88014003A3923 /* Pomodoro.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		73011DDD20C376460007EF19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		73011DDF20C376460007EF19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73C8B2DA20D0C561000FCB2F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		73C8B2DE20D32D65000FCB2F /* config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = config.plist; sourceTree = "<group>"; };
 		73C90A2820C88014003A3923 /* Pomodoro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pomodoro.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 				73011DDA20C376460007EF19 /* Assets.xcassets */,
 				73011DDC20C376460007EF19 /* LaunchScreen.storyboard */,
 				73011DDF20C376460007EF19 /* Info.plist */,
+				73C8B2DE20D32D65000FCB2F /* config.plist */,
 				73011DD720C376440007EF19 /* tim_ly.xcdatamodeld */,
 			);
 			path = tim.ly;
@@ -160,6 +163,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73C8B2DF20D32D65000FCB2F /* config.plist in Resources */,
 				73011DDE20C376460007EF19 /* LaunchScreen.storyboard in Resources */,
 				73011DDB20C376460007EF19 /* Assets.xcassets in Resources */,
 				73011DD620C376440007EF19 /* Main.storyboard in Resources */,
@@ -324,6 +328,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZRPR8SK28F;
 				INFOPLIST_FILE = tim.ly/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -342,6 +347,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZRPR8SK28F;
 				INFOPLIST_FILE = tim.ly/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

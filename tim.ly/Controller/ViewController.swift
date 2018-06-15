@@ -19,7 +19,7 @@ class ViewController: UIViewController, SettingsDelegate {
     @IBOutlet weak var roundBar: UIProgressView!
     @IBOutlet weak var modeLabel: UILabel!
     
-    // other things
+    // some constants set for the puposes of the pomodoro timer
     var seconds = 5
     var secondsSet = 5
     var timer = Timer()
@@ -30,6 +30,7 @@ class ViewController: UIViewController, SettingsDelegate {
     // some constants
     let alertSound: SystemSoundID = 1009
     let pomodoro = Pomodoro()
+    let configPath = Bundle.main.path(forResource: "config", ofType: "plist")
     
     
     // Begin functions here
@@ -41,6 +42,39 @@ class ViewController: UIViewController, SettingsDelegate {
         timerBar.progress = 0.0
         roundBar.progress = 0.0
         modeLabel.text = pomodoro.toString()
+        
+        // we pull the settings off the pList
+        updateSettings()
+        
+    }
+    
+    // implementation of settings delegate
+    func updateSettings() {
+        
+        // we grab our settings from the pList
+        
+        // we need some optionals in case the config pList is no good
+        // btw I anticipate this happening approximately never
+        var myConfig: NSDictionary?
+        
+        // we check the path for the pList and cast it to a dict
+        if let path = configPath {
+            myConfig = NSDictionary(contentsOf: URL(fileURLWithPath: path))
+        }
+        
+        // we unwrap the dict optional and see what we get out of it
+        if let configDict = myConfig {
+            
+            // we set all the values in the pomodoro
+            
+            // please don't ask me how this cast works -- I really have no f*cking clue
+            pomodoro.sessionGoal = Int((configDict.value(forKey: "sessionGoal") as! NSNumber).doubleValue)
+            pomodoro.dailyGoal = Int((configDict.value(forKey: "dailyGoal") as! NSNumber).doubleValue)
+            pomodoro.stateDurations[PomodoroState.work] = Int((configDict.value(forKey: "pomodoroLength") as! NSNumber).doubleValue)
+            pomodoro.stateDurations[PomodoroState.shortBreak] = Int((configDict.value(forKey: "shortLength") as! NSNumber).doubleValue)
+            pomodoro.stateDurations[PomodoroState.longBreak] = Int((configDict.value(forKey: "longLength") as! NSNumber).doubleValue)
+            
+        }
         
     }
 
@@ -183,11 +217,6 @@ class ViewController: UIViewController, SettingsDelegate {
             let destinationVC = segue.destination as! SettingsViewController
             destinationVC.delegate = self
         }
-        
-    }
-    
-    // implementation of settings delegate
-    func updateSettings() {
         
     }
     

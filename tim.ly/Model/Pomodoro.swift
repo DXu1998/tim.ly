@@ -23,6 +23,8 @@ class Pomodoro {
     var currentState = PomodoroState.work
     var endedNaturally = true
     var stateDurations: [PomodoroState: Int] = [PomodoroState.work: 1, PomodoroState.longBreak: 1, PomodoroState.shortBreak: 1]
+    var dailyGoal = 12
+    var sessionGoal = 4
     
     // allows us to print current state
     func toString() -> String {
@@ -70,7 +72,7 @@ class Pomodoro {
             }
             
             // we decide if we want a long break or a short break
-            if numSessions >= 4 {
+            if numSessions >= sessionGoal {
                 currentState = PomodoroState.longBreak
             }
             else {

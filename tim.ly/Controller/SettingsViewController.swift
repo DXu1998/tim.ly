@@ -15,6 +15,9 @@ protocol SettingsDelegate {
 
 class SettingsViewController: UIViewController {
 
+    // some constants I really should pass over but whatever
+    let configPath = Bundle.main.path(forResource: "config", ofType: "plist")
+    
     // declare delegate variable
     var delegate: SettingsDelegate?
     
@@ -75,11 +78,28 @@ class SettingsViewController: UIViewController {
     @IBAction func backButtonPressed(_ sender: Any) {
         
         // TODO update values in pList
+        updatePList()
         
         // update info back in original view controller
         delegate?.updateSettings()
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func updatePList() {
+        
+        // we check that the path to the pList is good
+        // we anticipate this being the case pretty mcuh always
+        if let path = configPath {
+            
+            let newDict = ["dailyGoal": Int(dailyLabel.text!), "longLength": Int(longLabel.text!), "pomodoroLength": Int(pomodoroLabel.text!), "sessionGoal": Int(sessionLabel.text!), "shortLength": Int(shortLabel.text!)]
+            
+            let nsNewDict = newDict as NSDictionary
+            
+            nsNewDict.write(to: URL(fileURLWithPath: path), atomically: true)
+            
+        }
+        
     }
     
 
