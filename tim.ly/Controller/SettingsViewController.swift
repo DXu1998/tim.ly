@@ -36,6 +36,13 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var sessionLabel: UILabel!
     @IBOutlet weak var dailyLabel: UILabel!
     
+    // we also declare a set of variables to hold the actual values to avoid unpleasantness
+    var pomodoroLength: Int = 10
+    var shortLength: Int = 10
+    var longLength: Int = 10
+    var sessionGoal: Int = 10
+    var dailyGoal: Int = 10
+    
     
     
     override func viewDidLoad() {
@@ -43,7 +50,6 @@ class SettingsViewController: UIViewController {
         
         // TODO read settings values from pList and set switches and counters appropriately
         
-        // This is a test comment for git commits
         
     }
 
@@ -54,7 +60,8 @@ class SettingsViewController: UIViewController {
     
     // all the switch functions
     @IBAction func pomodoroChanged(_ sender: Any) {
-        pomodoroLabel.text = "\(Int(pomodoroSwitch.value)) Min."
+        pomodoroLength = Int(pomodoroSwitch.value)
+        pomodoroLabel.text = "\(pomodoroLength) Min."
     }
     
     @IBAction func shortChanged(_ sender: Any) {
@@ -92,11 +99,26 @@ class SettingsViewController: UIViewController {
         // we anticipate this being the case pretty mcuh always
         if let path = configPath {
             
+            if var dict = NSMutableDictionary(contentsOfFile: path) {
+                
+                print("read: ")
+                print(dict)
+                
+                dict.setValue(pomodoroLength as Any, forKey: "pomodoroLength")
+                
+                print("written: ")
+                print(dict)
+                
+                dict.write(to: URL(fileURLWithPath: path), atomically: false)
+                
+            }
+            /*
             let newDict = ["dailyGoal": Int(dailyLabel.text!), "longLength": Int(longLabel.text!), "pomodoroLength": Int(pomodoroLabel.text!), "sessionGoal": Int(sessionLabel.text!), "shortLength": Int(shortLabel.text!)]
             
             let nsNewDict = newDict as NSDictionary
             
             nsNewDict.write(to: URL(fileURLWithPath: path), atomically: true)
+            */
             
         }
         
