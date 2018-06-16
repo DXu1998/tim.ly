@@ -37,18 +37,33 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var dailyLabel: UILabel!
     
     // we also declare a set of variables to hold the actual values to avoid unpleasantness
-    var pomodoroLength: Int = 10
-    var shortLength: Int = 10
-    var longLength: Int = 10
-    var sessionGoal: Int = 10
-    var dailyGoal: Int = 10
+    var pomodoroLength: Int = -1
+    var shortLength: Int = -1
+    var longLength: Int = -1
+    var sessionGoal: Int = -1
+    var dailyGoal: Int = -1
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO read settings values from pList and set switches and counters appropriately
+        // we were passed the previous state's settings from the Pomdoro object held by ViewController and update the labels with those values
+        // we should also note that the Pomdoro object's values were set from the pList so we have no issues there
+        pomodoroLabel.text = "\(pomodoroLength) Min."
+        pomodoroSwitch.value = Double(pomodoroLength)
+        
+        shortLabel.text = "\(shortLength) Min."
+        shortSwitch.value = Double(shortLength)
+        
+        longLabel.text = "\(longLength) Min."
+        longSwitch.value = Double(longLength)
+        
+        sessionLabel.text = "\(sessionGoal) Pomodoros"
+        sessionSwitch.value = Double(sessionGoal)
+        
+        dailyLabel.text = "\(dailyGoal) Sessions"
+        dailySwitch.value = Double(dailyGoal)
         
         
     }
@@ -65,19 +80,23 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func shortChanged(_ sender: Any) {
-        shortLabel.text = "\(Int(shortSwitch.value)) Min."
+        shortLength = Int(shortSwitch.value)
+        shortLabel.text = "\(shortLength) Min."
     }
     
     @IBAction func longChanged(_ sender: Any) {
-        longLabel.text = "\(Int(longSwitch.value)) Min."
+        longLength = Int(longSwitch.value)
+        longLabel.text = "\(longLength) Min."
     }
     
     @IBAction func sessionChanged(_ sender: Any) {
-        sessionLabel.text = "\(Int(sessionSwitch.value)) Pomodoros"
+        sessionGoal = Int(sessionSwitch.value)
+        sessionLabel.text = "\(sessionGoal) Pomodoros"
     }
     
     @IBAction func dailyChanged(_ sender: Any) {
-        dailyLabel.text = "\(Int(dailySwitch.value)) Sessions"
+        dailyGoal = Int(dailySwitch.value)
+        dailyLabel.text = "\(dailyGoal) Sessions"
     }
     
     
@@ -101,24 +120,17 @@ class SettingsViewController: UIViewController {
             
             if var dict = NSMutableDictionary(contentsOfFile: path) {
                 
-                print("read: ")
-                print(dict)
-                
+                // we change the values in the dict
                 dict.setValue(pomodoroLength as Any, forKey: "pomodoroLength")
+                dict.setValue(dailyGoal as Any, forKey: "dailyGoal")
+                dict.setValue(longLength as Any, forKey: "longLength")
+                dict.setValue(sessionGoal as Any, forKey: "sessionGoal")
+                dict.setValue(shortLength as Any, forKey: "shortLength")
                 
-                print("written: ")
-                print(dict)
-                
+                // we write the dict back to its URL
                 dict.write(to: URL(fileURLWithPath: path), atomically: false)
                 
             }
-            /*
-            let newDict = ["dailyGoal": Int(dailyLabel.text!), "longLength": Int(longLabel.text!), "pomodoroLength": Int(pomodoroLabel.text!), "sessionGoal": Int(sessionLabel.text!), "shortLength": Int(shortLabel.text!)]
-            
-            let nsNewDict = newDict as NSDictionary
-            
-            nsNewDict.write(to: URL(fileURLWithPath: path), atomically: true)
-            */
             
         }
         

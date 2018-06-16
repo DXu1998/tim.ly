@@ -20,8 +20,8 @@ class ViewController: UIViewController, SettingsDelegate {
     @IBOutlet weak var modeLabel: UILabel!
     
     // some constants set for the puposes of the pomodoro timer
-    var seconds = 5
-    var secondsSet = 5
+    var seconds = -1
+    var secondsSet = -1
     var timer = Timer()
     
     // some state things
@@ -45,6 +45,12 @@ class ViewController: UIViewController, SettingsDelegate {
         
         // we pull the settings off the pList
         updateSettings()
+        
+        // we set our labels initially -- we multiply by 60 b/c the pomdoro class stores time in minutes
+        secondsSet = 60 * pomodoro.stateDurations[pomodoro.currentState]!;
+        seconds = secondsSet;
+        
+        updateTimerLabel()
         
     }
     
@@ -214,8 +220,19 @@ class ViewController: UIViewController, SettingsDelegate {
         
         // make ourselves grabbable for the new ViewController
         if segue.identifier == "settingsSegue" {
+            
+            // we make the correct cast
             let destinationVC = segue.destination as! SettingsViewController
+            
+            // we pass our new SettingsViewController some information
             destinationVC.delegate = self
+            
+            destinationVC.dailyGoal = pomodoro.dailyGoal
+            destinationVC.longLength = pomodoro.stateDurations[PomodoroState.longBreak]!
+            destinationVC.shortLength = pomodoro.stateDurations[PomodoroState.shortBreak]!
+            destinationVC.pomodoroLength = pomodoro.stateDurations[PomodoroState.work]!
+            destinationVC.sessionGoal = pomodoro.sessionGoal
+            
         }
         
     }

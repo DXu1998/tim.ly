@@ -25,6 +25,7 @@ class Pomodoro {
     var stateDurations: [PomodoroState: Int] = [PomodoroState.work: 1, PomodoroState.longBreak: 1, PomodoroState.shortBreak: 1]
     var dailyGoal = 12
     var sessionGoal = 4
+    var goalProgress = 0
     
     // allows us to print current state
     func toString() -> String {
