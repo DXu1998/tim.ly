@@ -4,6 +4,8 @@
 //  State machine that keeps track of the current state of
 //  the current Pomodoro
 //
+//  Also holds all the parameters for the pomodoro
+//
 //  Created by Daniel Xu on 6/6/18.
 //  Copyright © 2018 Daniel Xu. All rights reserved.
 //

@@ -18,6 +18,7 @@ class ViewController: UIViewController, SettingsDelegate {
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var roundBar: UIProgressView!
     @IBOutlet weak var modeLabel: UILabel!
+    @IBOutlet weak var settingsButton: UIButton!
     
     // some constants set for the puposes of the pomodoro timer
     var seconds = -1
@@ -29,8 +30,8 @@ class ViewController: UIViewController, SettingsDelegate {
     
     // some constants
     let alertSound: SystemSoundID = 1009
-    let pomodoro = Pomodoro()
-    let configPath = Bundle.main.path(forResource: "config", ofType: "plist")
+    let pomodoro = Pomodoro() // pomodoro state machine -- contains all relevant data for pomodoro running
+    var configPath = "" // empty to begin with
     
     
     // Begin functions here
@@ -42,6 +43,23 @@ class ViewController: UIViewController, SettingsDelegate {
         timerBar.progress = 0.0
         roundBar.progress = 0.0
         modeLabel.text = pomodoro.toString()
+        
+        // we check how our config.plist file is doing and move it to the documents directory if we need to
+        // code mostly copied from StackOverflow
+        
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let plistPath = paths.appending("/config.plist")
+        let fileManager = FileManager.default
+        
+        // if we can't find our plist in the documents directory
+        if !fileManager.fileExists(atPath: plistPath)
+        {
+            // we copy everything over
+            let bundle = Bundle.main.path(forResource: "config", ofType: "plist")
+            try! fileManager.copyItem(atPath: bundle!, toPath: plistPath)
+        }
+        
+        configPath = plistPath
         
         // we pull the settings off the pList
         updateSettings()
@@ -62,12 +80,8 @@ class ViewController: UIViewController, SettingsDelegate {
         // we need some optionals in case the config pList is no good
         // btw I anticipate this happening approximately never
         var myConfig: NSDictionary?
-        
-        // we check the path for the pList and cast it to a dict
-        if let path = configPath {
-            myConfig = NSDictionary(contentsOf: URL(fileURLWithPath: path))
-        }
-        
+        myConfig = NSDictionary(contentsOf: URL(fileURLWithPath: configPath))
+
         // we unwrap the dict optional and see what we get out of it
         if let configDict = myConfig {
             
@@ -152,7 +166,7 @@ class ViewController: UIViewController, SettingsDelegate {
         
         // update progress bars
         timerBar.progress = Float(secondsSet - seconds) / Float(secondsSet)
-        roundBar.progress = Float(pomodoro.numSessions) / Float(4)
+        roundBar.progress = Float(pomodoro.numSessions) / Float(pomodoro.sessionGoal)
         
     }
     
@@ -193,9 +207,7 @@ class ViewController: UIViewController, SettingsDelegate {
 
     // really only used to change button color on press
     @IBAction func startPress(_ sender: UIButton) {
-        
         startButton.backgroundColor = UIColor(red: 0.09, green: 0.26, blue: 0.44, alpha: 1)
-        
     }
     
     @IBAction func startButton(_ sender: UIButton) {
@@ -215,6 +227,11 @@ class ViewController: UIViewController, SettingsDelegate {
         }
     }
     
+    // shade in settings button on press
+    @IBAction func settingsPressed(_ sender: Any) {
+        settingsButton.backgroundColor = UIColor(red: 0.09, green: 0.26, blue: 0.44, alpha: 1)
+    }
+    
     // segway preparation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -226,6 +243,7 @@ class ViewController: UIViewController, SettingsDelegate {
             
             // we pass our new SettingsViewController some information
             destinationVC.delegate = self
+            destinationVC.configPath = self.configPath
             
             destinationVC.dailyGoal = pomodoro.dailyGoal
             destinationVC.longLength = pomodoro.stateDurations[PomodoroState.longBreak]!

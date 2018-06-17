@@ -14,9 +14,12 @@ protocol SettingsDelegate {
 }
 
 class SettingsViewController: UIViewController {
-
-    // some constants I really should pass over but whatever
-    let configPath = Bundle.main.path(forResource: "config", ofType: "plist")
+    
+    // our settings file path
+    var configPath: String!
+    
+    // the one button we have
+    @IBOutlet weak var backButton: UIButton!
     
     // declare delegate variable
     var delegate: SettingsDelegate?
@@ -99,6 +102,11 @@ class SettingsViewController: UIViewController {
         dailyLabel.text = "\(dailyGoal) Sessions"
     }
     
+    
+    // to shade the button on press
+    @IBAction func backPress(_ sender: Any) {
+        backButton.backgroundColor = UIColor(red: 0.09, green: 0.26, blue: 0.44, alpha: 1)
+    }
     
     // define back button action
     @IBAction func backButtonPressed(_ sender: Any) {

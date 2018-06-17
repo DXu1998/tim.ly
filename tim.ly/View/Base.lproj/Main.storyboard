@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -198,6 +199,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="settingsPressed:" destination="BYZ-38-t0r" eventType="touchDown" id="Irx-e9-s3Z"/>
                                             <action selector="stopPress:" destination="BYZ-38-t0r" eventType="touchDown" id="Zw3-01-4EW"/>
                                             <segue destination="rPX-YP-Bu8" kind="show" identifier="settingsSegue" id="U3f-lN-Wq5"/>
                                         </connections>
@@ -227,6 +229,7 @@
                     <connections>
                         <outlet property="modeLabel" destination="Zmd-OR-GSX" id="mRY-xu-y0M"/>
                         <outlet property="roundBar" destination="z03-y8-1j3" id="oOA-nk-5cn"/>
+                        <outlet property="settingsButton" destination="Wdt-d8-gyF" id="cGf-gd-d5H"/>
                         <outlet property="startButton" destination="NJT-Nh-6Es" id="Ege-4R-3cc"/>
                         <outlet property="stopButton" destination="Tac-kQ-nYI" id="FtB-Dx-QCy"/>
                         <outlet property="timerBar" destination="Dlv-OX-ISD" id="fdA-Ga-pOT"/>
@@ -271,6 +274,7 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="backButtonPressed:" destination="rPX-YP-Bu8" eventType="touchUpInside" id="2EL-n8-n7G"/>
+                                                    <action selector="backPress:" destination="rPX-YP-Bu8" eventType="touchDown" id="XqX-cL-IF2"/>
                                                     <action selector="stopButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FLd-d0-7al"/>
                                                     <action selector="stopPress:" destination="BYZ-38-t0r" eventType="touchDown" id="x9h-VY-Efy"/>
                                                 </connections>
@@ -515,6 +519,7 @@
                     <navigationItem key="navigationItem" title="Title" id="cos-2M-0Ze"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="backButton" destination="6ps-mA-oaj" id="qfx-mb-b6y"/>
                         <outlet property="dailyLabel" destination="dI6-oP-SdT" id="HQw-M5-18P"/>
                         <outlet property="dailySwitch" destination="DVQ-p8-t8Z" id="E6o-Gi-Fqd"/>
                         <outlet property="longLabel" destination="hNi-ZM-oaO" id="ixi-8G-6d8"/>
