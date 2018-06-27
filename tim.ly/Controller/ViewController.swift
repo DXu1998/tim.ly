@@ -8,6 +8,7 @@
 
 import UIKit
 import AudioToolbox
+import UserNotifications
 
 class ViewController: UIViewController, SettingsDelegate {
 
@@ -69,6 +70,21 @@ class ViewController: UIViewController, SettingsDelegate {
         seconds = secondsSet;
         
         updateTimerLabel()
+        
+        // TESTING
+        
+        // we try out the notifications
+        /*
+        let content = UNMutableNotificationContent()
+        content.title = "Pomodoro finished"
+        content.body = "Short break beginning \nDaily goal: 3/12"
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+ */
         
     }
     
