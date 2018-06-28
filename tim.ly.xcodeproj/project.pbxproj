@@ -16,6 +16,7 @@
 		73C8B2DB20D0C561000FCB2F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8B2DA20D0C561000FCB2F /* SettingsViewController.swift */; };
 		73C8B2DF20D32D65000FCB2F /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73C8B2DE20D32D65000FCB2F /* config.plist */; };
 		73C90A2920C88014003A3923 /* Pomodoro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C90A2820C88014003A3923 /* Pomodoro.swift */; };
+		73D0F61220E5640B00D1A71B /* BackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D0F61120E5640B00D1A71B /* BackgroundManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		73C8B2DA20D0C561000FCB2F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		73C8B2DE20D32D65000FCB2F /* config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = config.plist; sourceTree = "<group>"; };
 		73C90A2820C88014003A3923 /* Pomodoro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pomodoro.swift; sourceTree = "<group>"; };
+		73D0F61120E5640B00D1A71B /* BackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		73011DCF20C376440007EF19 /* tim.ly */ = {
 			isa = PBXGroup;
 			children = (
+				73011DD020C376440007EF19 /* AppDelegate.swift */,
 				73C8B2D720D0643B000FCB2F /* Controller */,
 				73C8B2D620D06437000FCB2F /* View */,
 				73C8B2D520D0642F000FCB2F /* Model */,
@@ -78,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				73C90A2820C88014003A3923 /* Pomodoro.swift */,
+				73D0F61120E5640B00D1A71B /* BackgroundManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -94,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				73011DD220C376440007EF19 /* ViewController.swift */,
-				73011DD020C376440007EF19 /* AppDelegate.swift */,
 				73C8B2DA20D0C561000FCB2F /* SettingsViewController.swift */,
 			);
 			path = Controller;
@@ -180,6 +183,7 @@
 				73C90A2920C88014003A3923 /* Pomodoro.swift in Sources */,
 				73011DD920C376440007EF19 /* tim_ly.xcdatamodeld in Sources */,
 				73011DD320C376440007EF19 /* ViewController.swift in Sources */,
+				73D0F61220E5640B00D1A71B /* BackgroundManager.swift in Sources */,
 				73C8B2DB20D0C561000FCB2F /* SettingsViewController.swift in Sources */,
 				73011DD120C376440007EF19 /* AppDelegate.swift in Sources */,
 			);

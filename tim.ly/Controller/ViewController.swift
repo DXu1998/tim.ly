@@ -75,6 +75,7 @@ class ViewController: UIViewController, SettingsDelegate {
         
         // we try out the notifications
         /*
+         
         let content = UNMutableNotificationContent()
         content.title = "Pomodoro finished"
         content.body = "Short break beginning \nDaily goal: 3/12"
@@ -84,8 +85,20 @@ class ViewController: UIViewController, SettingsDelegate {
         
         let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
- */
+         
+         */
         
+        NotificationCenter.default.addObserver(self, selector: #selector(printTime), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func printTime(bob: Int) {
+        print("seconds: \(seconds)")
+        print("seconds set: \(secondsSet)")
     }
     
     // implementation of settings delegate
