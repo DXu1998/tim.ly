@@ -33,6 +33,7 @@ class ViewController: UIViewController, SettingsDelegate {
     let alertSound: SystemSoundID = 1009
     let pomodoro = Pomodoro() // pomodoro state machine -- contains all relevant data for pomodoro running
     var configPath = "" // empty to begin with
+    var bgManager: BackgroundManager! // handles foregrounding and backgrounding procedure for app
     
     
     // Begin functions here
@@ -88,7 +89,13 @@ class ViewController: UIViewController, SettingsDelegate {
          
          */
         
-        NotificationCenter.default.addObserver(self, selector: #selector(printTime), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        // we properly instantiate the BackgroundManager
+        bgManager = BackgroundManager(pomodoro: self.pomodoro)
+        
+        // we instantiate listeners/observers to trigger operations on app foregrounding and backgrounding
+        NotificationCenter.default.addObserver(self, selector: #selector(prepForBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(prepForForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
     }
     
@@ -96,9 +103,12 @@ class ViewController: UIViewController, SettingsDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func printTime(bob: Int) {
-        print("seconds: \(seconds)")
-        print("seconds set: \(secondsSet)")
+    @objc func prepForBackground() {
+        bgManager!.saveTime(curSeconds: seconds)
+    }
+    
+    @objc func prepForForeground() {
+        seconds = bgManager!.updateTime()
     }
     
     // implementation of settings delegate
