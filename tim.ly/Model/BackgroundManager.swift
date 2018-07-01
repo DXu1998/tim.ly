@@ -43,7 +43,6 @@ class BackgroundManager {
         // if we don't actually need to advance the state
         if timeElapsed < secondsLeft {
             secondsLeft -= timeElapsed
-            return
         }
             
         else {
@@ -51,15 +50,29 @@ class BackgroundManager {
             // we make one advance of the state
             var time = timeElapsed
             time -= secondsLeft
+            secondsLeft = 0 // technically all the time here was used up
             pomodoroState.advanceState(endedNaturally: true)
             
             // we decide if we need to advance the state again
-            while time > 0 {
+            while true {
                 
                 // if we do need to advance the state
                 if time > 60 * pomodoroState.stateDurations[pomodoroState.currentState]! {
                     
+                    // we subtract away the duration of that state
+                    time -= 60 * pomodoroState.stateDurations[pomodoroState.currentState]!
                     
+                    // we actually advance the state
+                    pomodoroState.advanceState(endedNaturally: true)
+                    
+                }
+                
+                // if we don't we redistribute some things and cancel out
+                else {
+                    
+                    // we assign what's left in time to secondsLeft to be passed out of here
+                    secondsLeft = time
+                    break
                     
                 }
                 
@@ -87,8 +100,6 @@ class BackgroundManager {
             finalTime = secondsLeft
             
         }
-        
-        print("current mode: \(pomodoroState.currentState)")
         
         return finalTime
         
