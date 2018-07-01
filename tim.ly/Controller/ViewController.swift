@@ -108,7 +108,13 @@ class ViewController: UIViewController, SettingsDelegate {
     }
     
     @objc func prepForForeground() {
+        // we update the current time on the clock from our background manager
         seconds = bgManager!.updateTime()
+        
+        // we check if we might be on a different state and update accordingly
+        secondsSet = 60 * pomodoro.stateDurations[pomodoro.currentState]!
+        modeLabel.text = pomodoro.toString()
+
     }
     
     // implementation of settings delegate
