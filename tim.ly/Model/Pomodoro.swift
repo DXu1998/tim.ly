@@ -19,16 +19,37 @@ enum PomodoroState {
     case longBreak
 }
 
-class Pomodoro {
+class Pomodoro: NSCopying {
     
     var numSessions = 0
     var currentState = PomodoroState.work
-    var endedNaturally = true
     var stateDurations: [PomodoroState: Int] = [PomodoroState.work: 1, PomodoroState.longBreak: 1, PomodoroState.shortBreak: 1]
     var dailyGoal = 12
     var sessionGoal = 4
     var goalProgress = 0
+
     
+    init() {
+        // this is the default initializer
+    }
+    
+    // a constructor to support the copy constructor
+    init(numSessions: Int, currentState: PomodoroState, stateDurations: [PomodoroState: Int], dailyGoal: Int, sessionGoal: Int, goalProgress: Int) {
+        
+        self.numSessions = numSessions
+        self.currentState = currentState
+        self.stateDurations = stateDurations
+        self.dailyGoal = dailyGoal
+        self.sessionGoal = sessionGoal
+        self.goalProgress = goalProgress
+        
+    }
+    
+    // our actual copy constructor
+    func copy(with zone: NSZone? = nil) -> Any {
+        return Pomodoro(numSessions: self.numSessions, currentState: self.currentState, stateDurations: self.stateDurations, dailyGoal: self.dailyGoal, sessionGoal: self.sessionGoal, goalProgress: self.goalProgress)
+    }
+ 
     // allows us to print current state
     func toString() -> String {
         
@@ -42,6 +63,7 @@ class Pomodoro {
             
         case PomodoroState.work:
             return "Work"
+            
         }
         
     }

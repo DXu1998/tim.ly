@@ -10,6 +10,7 @@
 //
 
 import Foundation
+import UserNotifications
 
 class BackgroundManager {
     
@@ -33,6 +34,10 @@ class BackgroundManager {
         // we save the time of backgrounding
         secondsLeft = curSeconds
         bgTime = Date()
+        
+        // we get the notifications saved
+        // this may take awhile which is why we do this after we've saved the time of stoppage
+        scheduleNotifications(timeRemaining: secondsLeft)
         
         
     }
@@ -106,13 +111,94 @@ class BackgroundManager {
     }
     
     // Schedules all the necessary notifications when app is backgrounding
-    func scheduleNotifications() {
+    func scheduleNotifications(timeRemaining: Int) {
+        
+        // we create our three types of notifications
+        let pomodoroNotification = UNMutableNotificationContent()
+        pomodoroNotification.body = "Pomodoro finished"
+        pomodoroNotification.sound = UNNotificationSound.default()
+        
+        let sBreakNotification = UNMutableNotificationContent()
+        sBreakNotification.body = "Short break finished"
+        sBreakNotification.sound = UNNotificationSound.default()
+
+        let lBreakNotification = UNMutableNotificationContent()
+        lBreakNotification.body = "long break finished"
+        lBreakNotification.sound = UNNotificationSound.default()
+        
+        // we copy our pomodoro
+        let cpPomodoro = pomodoroState.copy() as! Pomodoro
+        
+        // we schedule our first notification
+        
+        var useContent = pomodoroNotification
+        
+        // first we figure out which notification to schedule
+        switch cpPomodoro.currentState {
+            case PomodoroState.shortBreak:
+                useContent = sBreakNotification
+            case PomodoroState.longBreak:
+                useContent = lBreakNotification
+            case PomodoroState.work:
+                useContent = pomodoroNotification
+        }
+        
+         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(timeRemaining), repeats: false)
+         let request = UNNotificationRequest(identifier: "PomodoroNotification", content: useContent, trigger: trigger)
+         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        
+        // we advance the state of our copied pomodoro because we've scheduled a notification for it
+        cpPomodoro.advanceState(endedNaturally: true)
+        
+        // we make a copy of our timeRemaining for future use
+        var cumulTime = timeRemaining
+        
+        // we go ahead and schedule the next 52 notifications
+        for _ in 1...52 {
+            
+            // first we figure out what notification we should use next
+            switch cpPomodoro.currentState {
+                
+            case PomodoroState.shortBreak:
+                
+                // we should note that going forward cumulTime is in seconds
+                cumulTime += 60 * cpPomodoro.stateDurations[cpPomodoro.currentState]!
+                
+                // we create our notification and schedule it
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(cumulTime), repeats: false)
+                let request = UNNotificationRequest(identifier: "PomodoroNotification", content: sBreakNotification, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                
+            case PomodoroState.longBreak:
+                
+                cumulTime += 60 * cpPomodoro.stateDurations[cpPomodoro.currentState]!
+                
+                // we create our notification and schedule it
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(cumulTime), repeats: false)
+                let request = UNNotificationRequest(identifier: "PomodoroNotification", content: lBreakNotification, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                
+            case PomodoroState.work:
+                
+                cumulTime += 60 * cpPomodoro.stateDurations[cpPomodoro.currentState]!
+                
+                // we create our notification and schedule it
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(cumulTime), repeats: false)
+                let request = UNNotificationRequest(identifier: "PomodoroNotification", content: pomodoroNotification, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                
+            }
+            
+            
+            
+        }
+
         
     }
     
     // deschedules all the notifications remaining when app is coming out of background
     func descheduleNotifications() {
-        
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["PomodoroNotification"])
     }
     
 }

@@ -8,7 +8,6 @@
 
 import UIKit
 import AudioToolbox
-import UserNotifications
 
 class ViewController: UIViewController, SettingsDelegate {
 
@@ -72,23 +71,6 @@ class ViewController: UIViewController, SettingsDelegate {
         
         updateTimerLabel()
         
-        // TESTING
-        
-        // we try out the notifications
-        /*
-         
-        let content = UNMutableNotificationContent()
-        content.title = "Pomodoro finished"
-        content.body = "Short break beginning \nDaily goal: 3/12"
-        content.sound = UNNotificationSound.default()
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
-        
-        let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-         
-         */
-        
         // we properly instantiate the BackgroundManager
         bgManager = BackgroundManager(pomodoro: self.pomodoro)
         
@@ -104,16 +86,24 @@ class ViewController: UIViewController, SettingsDelegate {
     }
     
     @objc func prepForBackground() {
-        bgManager!.saveTime(curSeconds: seconds)
+        
+        // we only bother with this saving stuff if the timer is running
+        if timerIsRunning {
+            bgManager!.saveTime(curSeconds: seconds)
+        }
+        
     }
     
     @objc func prepForForeground() {
-        // we update the current time on the clock from our background manager
-        seconds = bgManager!.updateTime()
         
-        // we check if we might be on a different state and update accordingly
-        secondsSet = 60 * pomodoro.stateDurations[pomodoro.currentState]!
-        modeLabel.text = pomodoro.toString()
+        if timerIsRunning {
+            // we update the current time on the clock from our background manager
+            seconds = bgManager!.updateTime()
+            
+            // we check if we might be on a different state and update accordingly
+            secondsSet = 60 * pomodoro.stateDurations[pomodoro.currentState]!
+            modeLabel.text = pomodoro.toString()
+        }
 
     }
     
@@ -156,6 +146,13 @@ class ViewController: UIViewController, SettingsDelegate {
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.updateTimer), userInfo: nil, repeats: true)
         timerIsRunning = true
+    }
+    
+    func continueTimer() {
+        
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.updateTimer), userInfo: nil, repeats: true)
+        timerIsRunning = true
+        
     }
     
     func signalEnd() {
@@ -263,7 +260,7 @@ class ViewController: UIViewController, SettingsDelegate {
         if !timerIsRunning {
             startButton.setTitle("Pause", for: .normal)
             timerIsRunning = true
-            runTimer()
+            continueTimer()
         }
         else {
             startButton.setTitle("Start", for: .normal)
