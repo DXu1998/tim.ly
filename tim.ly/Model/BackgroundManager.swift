@@ -198,6 +198,9 @@ class BackgroundManager {
                 
             }
             
+            // we advance our pomodoro to set the next notification
+            cpPomodoro.advanceState(endedNaturally: true)
+            
             // we save the identifier into our array
             nIdentifiers.append(strIdentifier)
             
