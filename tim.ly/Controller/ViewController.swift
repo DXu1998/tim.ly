@@ -19,6 +19,7 @@ class ViewController: UIViewController, SettingsDelegate {
     @IBOutlet weak var roundBar: UIProgressView!
     @IBOutlet weak var modeLabel: UILabel!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var goalBar: UIProgressView!
     
     // some constants set for the puposes of the pomodoro timer
     var seconds = -1
@@ -79,10 +80,23 @@ class ViewController: UIViewController, SettingsDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(prepForForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(prepForTermination), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+        
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func prepForTermination() {
+        
+        print("terminating")
+        
+        // we deschedule all our notifications
+        bgManager!.descheduleNotifications()
+        
+        // TODO insert code for saving the current state of the app to the backend
+        
     }
     
     @objc func prepForBackground() {
@@ -209,6 +223,7 @@ class ViewController: UIViewController, SettingsDelegate {
         // update progress bars
         timerBar.progress = Float(secondsSet - seconds) / Float(secondsSet)
         roundBar.progress = Float(pomodoro.numSessions) / Float(pomodoro.sessionGoal)
+        goalBar.progress = Float(pomodoro.goalProgress) / Float(pomodoro.dailyGoal)
         
     }
     

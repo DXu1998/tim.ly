@@ -227,6 +227,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="goalBar" destination="QuD-tF-kBP" id="JCw-z0-8sb"/>
                         <outlet property="modeLabel" destination="Zmd-OR-GSX" id="mRY-xu-y0M"/>
                         <outlet property="roundBar" destination="z03-y8-1j3" id="oOA-nk-5cn"/>
                         <outlet property="settingsButton" destination="Wdt-d8-gyF" id="cGf-gd-d5H"/>

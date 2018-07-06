@@ -153,6 +153,8 @@ class BackgroundManager {
          let request = UNNotificationRequest(identifier: "PomodoroNotification", content: useContent, trigger: trigger)
          UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         
+        nIdentifiers.append("PomodoroNotification")
+        
         // we advance the state of our copied pomodoro because we've scheduled a notification for it
         cpPomodoro.advanceState(endedNaturally: true)
         
