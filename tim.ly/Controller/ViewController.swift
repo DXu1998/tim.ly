@@ -73,7 +73,7 @@ class ViewController: UIViewController, SettingsDelegate {
         updateTimerLabel()
         
         // we properly instantiate the BackgroundManager
-        bgManager = BackgroundManager(pomodoro: self.pomodoro)
+        bgManager = BackgroundManager(vc: self)
         
         // we instantiate listeners/observers to trigger operations on app foregrounding and backgrounding
         NotificationCenter.default.addObserver(self, selector: #selector(prepForBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -87,33 +87,11 @@ class ViewController: UIViewController, SettingsDelegate {
     }
     
     @objc func prepForBackground() {
-        
-        print("did background")
-        
-        bgManager!.saveTime(curSeconds: seconds)
-
+        bgManager!.saveState()
     }
     
     @objc func prepForForeground() {
-        
-        timerIsRunning = bgManager!.loadContext()
-        
-        // basically if we're foregrounding from the background
-        if timerIsRunning {
-            // we update the current time on the clock from our background manager
-            seconds = bgManager!.updateTime()
-            
-            // we check if we might be on a different state and update accordingly
-            secondsSet = 60 * pomodoro.stateDurations[pomodoro.currentState]!
-            modeLabel.text = pomodoro.toString()
-        }
-        
-        // if we're foregrounding as part of initial startup or if the timer isn't running
-        // either way we shouldn't mess anything up by restoring the state from the ContinuityManager
-        else {
-            
-        }
-
+        bgManager!.recoverState()
     }
     
     // implementation of settings delegate
@@ -217,8 +195,16 @@ class ViewController: UIViewController, SettingsDelegate {
         
         // update progress bars
         timerBar.progress = Float(secondsSet - seconds) / Float(secondsSet)
-        roundBar.progress = Float(pomodoro.numSessions) / Float(pomodoro.sessionGoal)
-        goalBar.progress = Float(pomodoro.goalProgress) / Float(pomodoro.dailyGoal)
+        
+        var roundVal = Float(pomodoro.numSessions) / Float(pomodoro.sessionGoal)
+        var goalVal = Float(pomodoro.goalProgress) / Float(pomodoro.dailyGoal)
+        
+        // we make sure we don't ever get anything out of bounds
+        if roundVal > 1 { roundVal = 1 }
+        if goalVal > 1 { goalVal = 1 }
+        
+        roundBar.progress = roundVal
+        goalBar.progress = goalVal
         
     }
     

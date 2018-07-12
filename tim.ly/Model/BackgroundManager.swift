@@ -17,29 +17,52 @@ class BackgroundManager {
     var secondsLeft = -1 // seconds left on the timer in the ViewController at time of backgrounding
     var pomodoroState: Pomodoro // holds reference to pomodoro state object passed by ViewController
     var bgTime = Date() // contains the time of backgrounding
-    var nIdentifiers: [String] = [] // contains the identifiers for all the scheduled notifications
+    var parentVC: ViewController // holds reference to our containing ViewController
     
-    // state var to prevent things from happening when app initially boots up
-    var didEnterBackground = false
+    let defaults = UserDefaults.standard
     
     // constructor needs pomodoro passed
-    init(pomodoro: Pomodoro) {
-        self.pomodoroState = pomodoro
+    init(vc: ViewController) {
+        self.parentVC = vc
+        self.pomodoroState = vc.pomodoro
     }
     
     // for use when app is backgrounding -- saves the current timestamp
-    func saveTime(curSeconds: Int) {
-        
-        didEnterBackground = true
+    func saveState() {
         
         // we save the time of backgrounding
-        secondsLeft = curSeconds
+        secondsLeft = parentVC.seconds
         bgTime = Date()
         
         // we get the notifications saved
         // this may take awhile which is why we do this after we've saved the time of stoppage
-        scheduleNotifications(timeRemaining: secondsLeft)
+        if parentVC.timerIsRunning {
+            scheduleNotifications(timeRemaining: secondsLeft)
+        }
+            
+        // then we save everything about the app state to UserDefaults in case we don't come back
+        defaults.set(parentVC.timerIsRunning, forKey: "timerIsRunning")
+        defaults.set(secondsLeft, forKey: "secondsLeft")
+        defaults.set(parentVC.secondsSet, forKey: "secondsSet")
+        defaults.set(pomodoroState.goalProgress, forKey: "goalProgress")
+        defaults.set(pomodoroState.numSessions, forKey: "numSessions")
         
+        // because we can't store enums explicitly
+        switch pomodoroState.currentState {
+            
+        case PomodoroState.shortBreak:
+            defaults.set(2, forKey: "currentState")
+        
+        case PomodoroState.longBreak:
+            defaults.set(3, forKey: "currentState")
+        
+        case PomodoroState.work:
+            defaults.set(1, forKey: "currentState")
+        
+        }
+        
+        // to avoid null value situations when we boot up the app for the first time
+        defaults.set(true, forKey: "shouldRecoverState")
         
     }
     
@@ -89,18 +112,42 @@ class BackgroundManager {
     }
     
     // calculates time passed and calculates current pomodoro state for UI updates
-    func updateTime() -> Int {
+    func recoverState() {
         
-        // holder variable for the time we return out
-        var finalTime = 0
+        // check if we need to recover the state
+        let shouldRecoverState = defaults.bool(forKey: "shouldRecoverState")
         
-        // we don't want this to run when app initially launches
-        if didEnterBackground {
-            
-            // we dump all our notifications
-            descheduleNotifications()
-            
-            didEnterBackground = false
+        if !shouldRecoverState {
+            return
+        }
+        
+        // we dump all our notifications if we need to
+        descheduleNotifications()
+        
+        // we recover the state of our app from where we left off
+        parentVC.timerIsRunning = defaults.bool(forKey: "timerIsRunning")
+        parentVC.secondsSet = defaults.integer(forKey: "secondsSet")
+        parentVC.seconds = defaults.integer(forKey: "secondsLeft")
+        secondsLeft = parentVC.seconds
+        pomodoroState.goalProgress = defaults.integer(forKey: "goalProgress")
+        pomodoroState.numSessions = defaults.integer(forKey: "numSessions")
+        
+        switch defaults.integer(forKey: "currentState") {
+        case 1:
+            pomodoroState.currentState = PomodoroState.work
+        case 2:
+            pomodoroState.currentState = PomodoroState.shortBreak
+        case 3:
+            pomodoroState.currentState = PomodoroState.longBreak
+        default:
+            pomodoroState.currentState = PomodoroState.work
+        }
+        
+        // if the timer was running and we need to calculate a new time
+        if parentVC.timerIsRunning {
+        
+            // holder variable for the time we put out
+            var finalTime = 0
             
             // below is technically a TimeInterval object which we cast into its number of seconds
             let timeElapsed = Int(Date().timeIntervalSince(bgTime))
@@ -108,17 +155,18 @@ class BackgroundManager {
             
             finalTime = secondsLeft
             
+            parentVC.seconds = finalTime
+            
+            // we check if we might be on a different state and update accordingly
+            parentVC.secondsSet = 60 * pomodoroState.stateDurations[pomodoroState.currentState]!
+            parentVC.modeLabel.text = pomodoroState.toString()
+            
         }
-        
-        return finalTime
         
     }
     
     // Schedules all the necessary notifications when app is backgrounding
     func scheduleNotifications(timeRemaining: Int) {
-        
-        // we clear all previously scheduled notifications
-        nIdentifiers = []
         
         // we create our three types of notifications
         let pomodoroNotification = UNMutableNotificationContent()
@@ -152,8 +200,6 @@ class BackgroundManager {
          let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(timeRemaining), repeats: false)
          let request = UNNotificationRequest(identifier: "PomodoroNotification", content: useContent, trigger: trigger)
          UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-        
-        nIdentifiers.append("PomodoroNotification")
         
         // we advance the state of our copied pomodoro because we've scheduled a notification for it
         cpPomodoro.advanceState(endedNaturally: true)
@@ -203,30 +249,13 @@ class BackgroundManager {
             // we advance our pomodoro to set the next notification
             cpPomodoro.advanceState(endedNaturally: true)
             
-            // we save the identifier into our array
-            nIdentifiers.append(strIdentifier)
-            
         }
 
     }
     
     // deschedules all the notifications remaining when app is coming out of background
     func descheduleNotifications() {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: nIdentifiers)
-    }
-    
-    // handles saving of context to UserDefault
-    func saveContext() {
-        
-    }
-    
-    // handles loading of app state from UserDefault and returns timerIsRunning var to main VC
-    func loadContext() -> Bool {
-        
-        
-        // TODO insert actual return
-        return true
-        
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
 }
