@@ -22,11 +22,12 @@ enum PomodoroState {
 class Pomodoro: NSCopying {
     
     var numSessions = 0
+    var goalProgress = 0
     var currentState = PomodoroState.work
+    
     var stateDurations: [PomodoroState: Int] = [PomodoroState.work: 1, PomodoroState.longBreak: 1, PomodoroState.shortBreak: 1]
     var dailyGoal = 12
     var sessionGoal = 4
-    var goalProgress = 0
 
     
     init() {

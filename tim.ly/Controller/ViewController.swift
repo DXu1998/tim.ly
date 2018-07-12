@@ -80,36 +80,25 @@ class ViewController: UIViewController, SettingsDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(prepForForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(prepForTermination), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
-        
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func prepForTermination() {
-        
-        print("terminating")
-        
-        // we deschedule all our notifications
-        bgManager!.descheduleNotifications()
-        
-        // TODO insert code for saving the current state of the app to the backend
-        
-    }
-    
     @objc func prepForBackground() {
         
-        // we only bother with this saving stuff if the timer is running
-        if timerIsRunning {
-            bgManager!.saveTime(curSeconds: seconds)
-        }
+        print("did background")
         
+        bgManager!.saveTime(curSeconds: seconds)
+
     }
     
     @objc func prepForForeground() {
         
+        timerIsRunning = bgManager!.loadContext()
+        
+        // basically if we're foregrounding from the background
         if timerIsRunning {
             // we update the current time on the clock from our background manager
             seconds = bgManager!.updateTime()
@@ -117,6 +106,12 @@ class ViewController: UIViewController, SettingsDelegate {
             // we check if we might be on a different state and update accordingly
             secondsSet = 60 * pomodoro.stateDurations[pomodoro.currentState]!
             modeLabel.text = pomodoro.toString()
+        }
+        
+        // if we're foregrounding as part of initial startup or if the timer isn't running
+        // either way we shouldn't mess anything up by restoring the state from the ContinuityManager
+        else {
+            
         }
 
     }

@@ -215,5 +215,19 @@ class BackgroundManager {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: nIdentifiers)
     }
     
+    // handles saving of context to UserDefault
+    func saveContext() {
+        
+    }
+    
+    // handles loading of app state from UserDefault and returns timerIsRunning var to main VC
+    func loadContext() -> Bool {
+        
+        
+        // TODO insert actual return
+        return true
+        
+    }
+    
 }
 
