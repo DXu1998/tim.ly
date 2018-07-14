@@ -159,11 +159,10 @@
                                 <rect key="frame" x="0.0" y="480" width="375" height="187"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NJT-Nh-6Es">
-                                        <rect key="frame" x="117.5" y="36" width="140" height="55"/>
+                                        <rect key="frame" x="116" y="0.0" width="143" height="56"/>
                                         <color key="backgroundColor" red="0.1215686275" green="0.28627450980000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="QRm-Rf-I16"/>
-                                            <constraint firstAttribute="width" constant="140" id="nJ8-dc-sAK"/>
+                                            <constraint firstAttribute="width" secondItem="NJT-Nh-6Es" secondAttribute="height" multiplier="28:11" id="11j-Nj-6Ke"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="35"/>
                                         <inset key="contentEdgeInsets" minX="20" minY="7" maxX="20" maxY="7"/>
@@ -182,10 +181,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wdt-d8-gyF" userLabel="Settings Button">
-                                        <rect key="frame" x="148.5" y="107" width="78" height="34"/>
+                                        <rect key="frame" x="138.5" y="69" width="98" height="34"/>
                                         <color key="backgroundColor" red="0.1215686275" green="0.28627450980000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="Wdt-d8-gyF" secondAttribute="height" multiplier="39:17" id="e1i-PL-jNq"/>
+                                            <constraint firstAttribute="width" secondItem="Wdt-d8-gyF" secondAttribute="height" multiplier="49:17" id="Af0-6v-3BZ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="20"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
@@ -204,12 +203,36 @@
                                             <segue destination="rPX-YP-Bu8" kind="show" identifier="settingsSegue" id="U3f-lN-Wq5"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irh-RU-Xfe" userLabel="Settings Button">
+                                        <rect key="frame" x="117.5" y="116" width="140" height="34"/>
+                                        <color key="backgroundColor" red="0.1215686275" green="0.28627450980000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="irh-RU-Xfe" secondAttribute="height" multiplier="70:17" id="rRB-nC-JY1"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="20"/>
+                                        <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" title="Reset Round">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.17893514469999999" green="0.3815490547" blue="0.68135310910000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="resetButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kx6-J3-XEp"/>
+                                            <action selector="resetPressed:" destination="BYZ-38-t0r" eventType="touchDown" id="kHA-eC-8Ga"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="NJT-Nh-6Es" firstAttribute="centerX" secondItem="AIm-0g-8Bc" secondAttribute="centerX" id="0Om-EL-jT8"/>
-                                    <constraint firstItem="Wdt-d8-gyF" firstAttribute="top" secondItem="NJT-Nh-6Es" secondAttribute="bottom" constant="16" id="KcJ-B9-Y7U"/>
-                                    <constraint firstItem="Wdt-d8-gyF" firstAttribute="centerX" secondItem="AIm-0g-8Bc" secondAttribute="centerX" id="YEs-vn-Ynb"/>
-                                    <constraint firstItem="NJT-Nh-6Es" firstAttribute="centerY" secondItem="AIm-0g-8Bc" secondAttribute="centerY" constant="-30" id="evS-3a-PvA"/>
+                                    <constraint firstItem="NJT-Nh-6Es" firstAttribute="centerX" secondItem="AIm-0g-8Bc" secondAttribute="centerX" id="3mL-vM-5a8"/>
+                                    <constraint firstItem="irh-RU-Xfe" firstAttribute="top" secondItem="Wdt-d8-gyF" secondAttribute="bottom" constant="13" id="By1-7I-FoL"/>
+                                    <constraint firstItem="Wdt-d8-gyF" firstAttribute="centerX" secondItem="AIm-0g-8Bc" secondAttribute="centerX" id="OfF-H0-9AC"/>
+                                    <constraint firstItem="NJT-Nh-6Es" firstAttribute="top" secondItem="AIm-0g-8Bc" secondAttribute="top" id="UB2-90-ACl"/>
+                                    <constraint firstItem="Wdt-d8-gyF" firstAttribute="top" secondItem="NJT-Nh-6Es" secondAttribute="bottom" constant="13" id="aD7-8g-waX"/>
+                                    <constraint firstItem="irh-RU-Xfe" firstAttribute="centerX" secondItem="AIm-0g-8Bc" secondAttribute="centerX" id="tOu-5j-BUC"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -229,6 +252,7 @@
                     <connections>
                         <outlet property="goalBar" destination="QuD-tF-kBP" id="JCw-z0-8sb"/>
                         <outlet property="modeLabel" destination="Zmd-OR-GSX" id="mRY-xu-y0M"/>
+                        <outlet property="resetButton" destination="irh-RU-Xfe" id="x3m-0a-bIb"/>
                         <outlet property="roundBar" destination="z03-y8-1j3" id="oOA-nk-5cn"/>
                         <outlet property="settingsButton" destination="Wdt-d8-gyF" id="cGf-gd-d5H"/>
                         <outlet property="startButton" destination="NJT-Nh-6Es" id="Ege-4R-3cc"/>
@@ -344,7 +368,7 @@
                                                         </connections>
                                                     </stepper>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 Min." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-u6-2vi">
-                                                        <rect key="frame" x="35" y="38.5" width="42" height="19"/>
+                                                        <rect key="frame" x="35" y="38" width="42" height="19"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="16"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -358,7 +382,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Short Break Length" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vNb-6V-PdZ">
-                                                <rect key="frame" x="8" y="39" width="139" height="19"/>
+                                                <rect key="frame" x="8" y="38.5" width="139" height="19"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -430,7 +454,7 @@
                                                         </connections>
                                                     </stepper>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 Pomodoros" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="guf-mh-7OX">
-                                                        <rect key="frame" x="-13.5" y="38" width="90.5" height="19"/>
+                                                        <rect key="frame" x="-13.5" y="38.5" width="90.5" height="19"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="16"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>

@@ -20,6 +20,7 @@ class ViewController: UIViewController, SettingsDelegate {
     @IBOutlet weak var modeLabel: UILabel!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var goalBar: UIProgressView!
+    @IBOutlet weak var resetButton: UIButton!
     
     // some constants set for the puposes of the pomodoro timer
     var seconds = -1
@@ -80,6 +81,8 @@ class ViewController: UIViewController, SettingsDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(prepForForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
+        prepForForeground() // to restore our state upon initiation
+        
     }
     
     deinit {
@@ -87,10 +90,16 @@ class ViewController: UIViewController, SettingsDelegate {
     }
     
     @objc func prepForBackground() {
+        
+        print("backgrounding")
+        
         bgManager!.saveState()
     }
     
     @objc func prepForForeground() {
+        
+        print("foregrounding")
+        
         bgManager!.recoverState()
     }
     
@@ -117,6 +126,9 @@ class ViewController: UIViewController, SettingsDelegate {
             pomodoro.stateDurations[PomodoroState.longBreak] = Int((configDict.value(forKey: "longLength") as! NSNumber).doubleValue)
             
         }
+        
+        // update UI in light of new settings
+        updateTimerLabel()
         
     }
 
@@ -269,6 +281,17 @@ class ViewController: UIViewController, SettingsDelegate {
     @IBAction func settingsPressed(_ sender: Any) {
         settingsButton.backgroundColor = UIColor(red: 0.09, green: 0.26, blue: 0.44, alpha: 1)
     }
+    
+    // shade in reset button on press
+    @IBAction func resetPressed(_ sender: Any) {
+        resetButton.backgroundColor = UIColor(red: 0.09, green: 0.26, blue: 0.44, alpha: 1)
+    }
+    
+    @IBAction func resetButton(_ sender: Any) {
+        pomodoro.numSessions = 0
+        updateTimerLabel()
+    }
+    
     
     // segway preparation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -161,7 +161,14 @@ class BackgroundManager {
             parentVC.secondsSet = 60 * pomodoroState.stateDurations[pomodoroState.currentState]!
             parentVC.modeLabel.text = pomodoroState.toString()
             
+            // we change allow the timer to continue running in the viewController
+            parentVC.continueTimer()
+            parentVC.startButton.setTitle("Pause", for: .normal)
+            
         }
+        
+        // we update the appearance of the UI
+        parentVC.updateTimerLabel()
         
     }
     
