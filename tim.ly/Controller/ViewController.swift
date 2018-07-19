@@ -294,6 +294,27 @@ class ViewController: UIViewController, SettingsDelegate {
         // change button color back
         resetButton.backgroundColor = UIColor(red: 0.12, green: 0.29, blue: 0.46, alpha: 1)
         
+        // then we check if they're sure
+        let alert = UIAlertController(title: "Are you sure?", message: "Round will be reset", preferredStyle: UIAlertControllerStyle.alert)
+        
+        // we add the no option
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: { (action) in
+            // we do nothing
+        }))
+        
+        // we add the yes they're sure option
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { (action) in
+            
+            self.resetRound()
+            
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func resetRound() {
+        
         pomodoro.numSessions = 0
         updateTimerLabel()
         
