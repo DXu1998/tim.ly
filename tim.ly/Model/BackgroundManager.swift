@@ -46,6 +46,7 @@ class BackgroundManager {
         defaults.set(parentVC.secondsSet, forKey: "secondsSet")
         defaults.set(pomodoroState.goalProgress, forKey: "goalProgress")
         defaults.set(pomodoroState.numSessions, forKey: "numSessions")
+        defaults.set(bgTime, forKey: "bgTime")
         
         // because we can't store enums explicitly
         switch pomodoroState.currentState {
@@ -131,6 +132,34 @@ class BackgroundManager {
         secondsLeft = parentVC.seconds
         pomodoroState.goalProgress = defaults.integer(forKey: "goalProgress")
         pomodoroState.numSessions = defaults.integer(forKey: "numSessions")
+        
+        // it's a little trickier to get the date object in case it's null
+        let bgTimeOptional = defaults.object(forKey: "bgTime") as? Date
+        
+        // we tentatively unwrap the optional
+        if (bgTimeOptional != nil) {
+            
+            bgTime = bgTimeOptional!
+            
+            // then we check to see if we should reset our daily goal -- basically if we've passed midnight
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .none
+            dateFormatter.locale = Locale(identifier: "en_US")
+
+            // we grab the current time
+            let currentDate = Date()
+            
+            let strCurDate = dateFormatter.string(from: currentDate)
+            let strBgDate = dateFormatter.string(from: bgTime)
+            
+            if strBgDate != strCurDate {
+                pomodoroState.goalProgress = 0
+            }
+            
+        }
+        
+        
         
         switch defaults.integer(forKey: "currentState") {
         case 1:

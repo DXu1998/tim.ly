@@ -198,6 +198,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="settingsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="StJ-m6-s7l"/>
                                             <action selector="settingsPressed:" destination="BYZ-38-t0r" eventType="touchDown" id="Irx-e9-s3Z"/>
                                             <action selector="stopPress:" destination="BYZ-38-t0r" eventType="touchDown" id="Zw3-01-4EW"/>
                                             <segue destination="rPX-YP-Bu8" kind="show" identifier="settingsSegue" id="U3f-lN-Wq5"/>

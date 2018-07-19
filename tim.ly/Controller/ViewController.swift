@@ -90,16 +90,12 @@ class ViewController: UIViewController, SettingsDelegate {
     }
     
     @objc func prepForBackground() {
-        
-        print("backgrounding")
-        
+        // we should turn off the timer we do have
+        timer.invalidate()
         bgManager!.saveState()
     }
     
     @objc func prepForForeground() {
-        
-        print("foregrounding")
-        
         bgManager!.recoverState()
     }
     
@@ -282,14 +278,45 @@ class ViewController: UIViewController, SettingsDelegate {
         settingsButton.backgroundColor = UIColor(red: 0.09, green: 0.26, blue: 0.44, alpha: 1)
     }
     
+    @IBAction func settingsButton(_ sender: Any) {
+        settingsButton.backgroundColor = UIColor(red: 0.12, green: 0.29, blue: 0.46, alpha: 1)
+
+    }
+    
+    
     // shade in reset button on press
     @IBAction func resetPressed(_ sender: Any) {
         resetButton.backgroundColor = UIColor(red: 0.09, green: 0.26, blue: 0.44, alpha: 1)
     }
     
     @IBAction func resetButton(_ sender: Any) {
+        
+        // change button color back
+        resetButton.backgroundColor = UIColor(red: 0.12, green: 0.29, blue: 0.46, alpha: 1)
+        
         pomodoro.numSessions = 0
         updateTimerLabel()
+        
+        if timerIsRunning {
+            
+            // stop the timer
+            timer.invalidate()
+            
+            // update state
+            pomodoro.advanceState(endedNaturally: false)
+            
+            // reset things
+            secondsSet = pomodoro.stateDurations[pomodoro.currentState]! * 60
+            seconds = secondsSet
+            timerIsRunning = false
+            
+            // update our labels
+            updateTimerLabel()
+            startButton.setTitle("Start", for: .normal)
+            modeLabel.text = pomodoro.toString()
+            
+        }
+        
     }
     
     
