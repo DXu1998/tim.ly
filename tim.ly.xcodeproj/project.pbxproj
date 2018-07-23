@@ -14,6 +14,8 @@
 		73011DD920C376440007EF19 /* tim_ly.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 73011DD720C376440007EF19 /* tim_ly.xcdatamodeld */; };
 		73011DDB20C376460007EF19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73011DDA20C376460007EF19 /* Assets.xcassets */; };
 		73011DDE20C376460007EF19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73011DDC20C376460007EF19 /* LaunchScreen.storyboard */; };
+		73A7A5B6210580FE0003B6A5 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A7A5B5210580FE0003B6A5 /* Period.swift */; };
+		73A7A5B8210582E60003B6A5 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A7A5B7210582E60003B6A5 /* RealmManager.swift */; };
 		73C8B2DB20D0C561000FCB2F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8B2DA20D0C561000FCB2F /* SettingsViewController.swift */; };
 		73C8B2DF20D32D65000FCB2F /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73C8B2DE20D32D65000FCB2F /* config.plist */; };
 		73C90A2920C88014003A3923 /* Pomodoro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C90A2820C88014003A3923 /* Pomodoro.swift */; };
@@ -29,6 +31,8 @@
 		73011DDA20C376460007EF19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		73011DDD20C376460007EF19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		73011DDF20C376460007EF19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		73A7A5B5210580FE0003B6A5 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		73A7A5B7210582E60003B6A5 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		73C8B2DA20D0C561000FCB2F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		73C8B2DE20D32D65000FCB2F /* config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = config.plist; sourceTree = "<group>"; };
 		73C90A2820C88014003A3923 /* Pomodoro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pomodoro.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 			children = (
 				73C90A2820C88014003A3923 /* Pomodoro.swift */,
 				73D0F61120E5640B00D1A71B /* BackgroundManager.swift */,
+				73A7A5B5210580FE0003B6A5 /* Period.swift */,
+				73A7A5B7210582E60003B6A5 /* RealmManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -248,11 +254,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				73C90A2920C88014003A3923 /* Pomodoro.swift in Sources */,
+				73A7A5B8210582E60003B6A5 /* RealmManager.swift in Sources */,
 				73011DD920C376440007EF19 /* tim_ly.xcdatamodeld in Sources */,
 				73011DD320C376440007EF19 /* ViewController.swift in Sources */,
 				73D0F61220E5640B00D1A71B /* BackgroundManager.swift in Sources */,
 				73C8B2DB20D0C561000FCB2F /* SettingsViewController.swift in Sources */,
 				73011DD120C376440007EF19 /* AppDelegate.swift in Sources */,
+				73A7A5B6210580FE0003B6A5 /* Period.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

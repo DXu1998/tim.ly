@@ -94,7 +94,7 @@ class Pomodoro: NSCopying {
             
             // we increment the counter if we need to
             if endedNaturally {
-                numSessions += 1
+                numSessions += 1 
                 goalProgress += 1
             }
             
