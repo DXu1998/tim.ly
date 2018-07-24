@@ -68,20 +68,28 @@ class BackgroundManager {
     }
     
     // advances pomodoro state to appropriate point after coming out of background mode
-    func incrementPomodoro(timeElapsed: Int) {
+    func incrementPomodoro(timeElapsed: Int, upTime: Date) {
         
         // if we don't actually need to advance the state
         if timeElapsed < secondsLeft {
             secondsLeft -= timeElapsed
         }
-            
+        
+        // if we actually need to advance the state
         else {
             
             // we make one advance of the state
             var time = timeElapsed
             time -= secondsLeft
+            
+            // we figure out the timestamp we should have for the completion
+            var deltaT = TimeInterval(secondsLeft)
+            var deltaDate = DateInterval(start: upTime, duration: deltaT)
+            var endTime = deltaDate.end
+            
+            pomodoroState.advanceState(endedNaturally: true, endTime: endTime) // we finish out our state
+            
             secondsLeft = 0 // technically all the time here was used up
-            pomodoroState.advanceState(endedNaturally: true) // we finish out our state
             
             // we decide if we need to advance the state again
             while true {
@@ -92,8 +100,13 @@ class BackgroundManager {
                     // we subtract away the duration of that state
                     time -= 60 * pomodoroState.stateDurations[pomodoroState.currentState]!
                     
+                    // we figure out the timestamp we should have for the completion
+                    deltaT = TimeInterval(60 * pomodoroState.stateDurations[pomodoroState.currentState]!)
+                    deltaDate = DateInterval(start: endTime, duration: deltaT)
+                    endTime = deltaDate.end
+                    
                     // we actually advance the state
-                    pomodoroState.advanceState(endedNaturally: true)
+                    pomodoroState.advanceState(endedNaturally: true, endTime: endTime)
                     
                 }
                 
@@ -129,7 +142,7 @@ class BackgroundManager {
         parentVC.timerIsRunning = defaults.bool(forKey: "timerIsRunning")
         parentVC.secondsSet = defaults.integer(forKey: "secondsSet")
         parentVC.seconds = defaults.integer(forKey: "secondsLeft")
-        secondsLeft = parentVC.seconds
+        secondsLeft = parentVC.seconds - 1
         pomodoroState.goalProgress = defaults.integer(forKey: "goalProgress")
         pomodoroState.numSessions = defaults.integer(forKey: "numSessions")
         
@@ -180,7 +193,7 @@ class BackgroundManager {
             
             // below is technically a TimeInterval object which we cast into its number of seconds
             let timeElapsed = Int(Date().timeIntervalSince(bgTime))
-            incrementPomodoro(timeElapsed: timeElapsed)
+            incrementPomodoro(timeElapsed: timeElapsed, upTime: bgTime)
             
             finalTime = secondsLeft
             
@@ -238,7 +251,9 @@ class BackgroundManager {
          UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         
         // we advance the state of our copied pomodoro because we've scheduled a notification for it
-        cpPomodoro.advanceState(endedNaturally: true)
+        // because we're kinda advancing a dummy pomodoro object we insert endedNaturally as false and set
+        // some rando value for endTime because it won't be recorded
+        cpPomodoro.advanceState(endedNaturally: false, endTime: Date())
         
         // we make a copy of our timeRemaining for future use
         var cumulTime = timeRemaining
@@ -283,7 +298,7 @@ class BackgroundManager {
             }
             
             // we advance our pomodoro to set the next notification
-            cpPomodoro.advanceState(endedNaturally: true)
+            cpPomodoro.advanceState(endedNaturally: false, endTime: Date())
             
         }
 

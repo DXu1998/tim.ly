@@ -16,10 +16,10 @@ class RealmMananager {
     let realm = try! Realm()
     
     // serves as initializer for the Realm Object since an actual init() method is more painful
-    func createPeriod(completionTime: Date, duration: Int, synced: Bool, pomodoroType: PomodoroState) -> Period {
+    private func createPeriod(completionTime: Date, duration: Int, synced: Bool, pomodoroType: PomodoroState) -> Period {
     
         // we create a period objec to fill in
-        var bob = Period()
+        let bob = Period()
         
         // we set our attributes
         bob.completionTime = completionTime
@@ -40,28 +40,23 @@ class RealmMananager {
     
     }
     
-    // storing one or more readings -- we think it would probably be more efficient to write multiple readings as batches
-    // indices of each array correspond to a particular time period -- sizes of all arrays must be same
-    func storePeriod(cTimes: [Date], durations: [Int], syncs: [Bool], pTypes: [PomodoroState]) {
+    // storing a reading
+    // it might be more efficient to group readings and write them as batches but whatever
+    func storePeriod(cTime: Date, duration: Int, wasSynced: Bool, pType: PomodoroState) {
         
-        let numReadings = cTimes.count
+        print(Realm.Configuration.defaultConfiguration.fileURL)
         
         // we start the enclosure for writing data to Realm
         do {
             
             // we start writing to realm
             try realm.write {
+                    
+                // we instantiate our object using our helper method
+                let bob = createPeriod(completionTime: cTime, duration: duration, synced: wasSynced, pomodoroType: pType)
                 
-                // we iterate through every element in our arrays
-                for i in 0...(numReadings - 1) {
-                    
-                    // we instantiate our object using our helper method
-                    let bob = createPeriod(completionTime: cTimes[i], duration: durations[i], synced: syncs[i], pomodoroType: pTypes[i])
-                    
-                    // we write our object to Realm
-                    realm.add(bob)
-                    
-                }
+                // we write our object to Realm
+                realm.add(bob)
                 
             }
             

@@ -28,6 +28,8 @@ class Pomodoro: NSCopying {
     var stateDurations: [PomodoroState: Int] = [PomodoroState.work: 1, PomodoroState.longBreak: 1, PomodoroState.shortBreak: 1]
     var dailyGoal = 12
     var sessionGoal = 4
+    
+    let dbManager = RealmMananager() // handles interactions with Realm
 
     
     init() {
@@ -71,12 +73,12 @@ class Pomodoro: NSCopying {
     
     // when we want to cancel out of our current session without touching anything
     func cancelSession() {
-        advanceState(endedNaturally: false)
+        advanceState(endedNaturally: false, endTime: Date()) // we pass forward a date object we won't use
     }
     
     // when our current state has elapsed naturally
-    func endSession() {
-        advanceState(endedNaturally: true)
+    func endSession(time: Date) {
+        advanceState(endedNaturally: true, endTime: time)
     }
     
     // when we want to reset the current session to 0 pomodoros done
@@ -87,14 +89,26 @@ class Pomodoro: NSCopying {
         
     }
     
-    func advanceState(endedNaturally: Bool) {
+    func advanceState(endedNaturally: Bool, endTime: Date) {
+        
+        // we record the ending of our current time period if it wasn't ended prematurely (cancelled)
+        if endedNaturally {
+            
+            // we record the necessary details
+            let thisState = currentState
+            let thisDuration = stateDurations[currentState]!
+            
+            // we actually write it into Realm
+            dbManager.storePeriod(cTime: endTime, duration: thisDuration, wasSynced: false, pType: thisState)
+            
+        }
         
         // if we're coming out of a work session
         if currentState == PomodoroState.work {
             
             // we increment the counter if we need to
             if endedNaturally {
-                numSessions += 1 
+                numSessions += 1
                 goalProgress += 1
             }
             

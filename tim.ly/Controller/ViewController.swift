@@ -152,8 +152,8 @@ class ViewController: UIViewController, SettingsDelegate {
     
     func signalEnd() {
         
-        // update state
-        pomodoro.advanceState(endedNaturally: true)
+        // update state -- it's fine if we use the state that we have here
+        pomodoro.advanceState(endedNaturally: true, endTime: Date())
         
         // soem basic housekeeping that may be reset
         secondsSet = pomodoro.stateDurations[pomodoro.currentState]! * 60
@@ -236,7 +236,7 @@ class ViewController: UIViewController, SettingsDelegate {
         timer.invalidate()
         
         // update state
-        pomodoro.advanceState(endedNaturally: false)
+        pomodoro.advanceState(endedNaturally: false, endTime: Date())
         
         // reset things
         secondsSet = pomodoro.stateDurations[pomodoro.currentState]! * 60
@@ -324,7 +324,7 @@ class ViewController: UIViewController, SettingsDelegate {
             timer.invalidate()
             
             // update state
-            pomodoro.advanceState(endedNaturally: false)
+            pomodoro.advanceState(endedNaturally: false, endTime: Date())
             
             // reset things
             secondsSet = pomodoro.stateDurations[pomodoro.currentState]! * 60
