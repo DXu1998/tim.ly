@@ -73,12 +73,12 @@ class Pomodoro: NSCopying {
     
     // when we want to cancel out of our current session without touching anything
     func cancelSession() {
-        advanceState(endedNaturally: false, endTime: Date()) // we pass forward a date object we won't use
+        advanceState(shouldRecord: false, endedNaturally: false, endTime: Date()) // we pass forward a date object we won't use
     }
     
     // when our current state has elapsed naturally
     func endSession(time: Date) {
-        advanceState(endedNaturally: true, endTime: time)
+        advanceState(shouldRecord: true, endedNaturally: true, endTime: time)
     }
     
     // when we want to reset the current session to 0 pomodoros done
@@ -89,10 +89,10 @@ class Pomodoro: NSCopying {
         
     }
     
-    func advanceState(endedNaturally: Bool, endTime: Date) {
+    func advanceState(shouldRecord: Bool, endedNaturally: Bool, endTime: Date) {
         
         // we record the ending of our current time period if it wasn't ended prematurely (cancelled)
-        if endedNaturally {
+        if shouldRecord {
             
             // we record the necessary details
             let thisState = currentState

@@ -87,7 +87,7 @@ class BackgroundManager {
             var deltaDate = DateInterval(start: upTime, duration: deltaT)
             var endTime = deltaDate.end
             
-            pomodoroState.advanceState(endedNaturally: true, endTime: endTime) // we finish out our state
+            pomodoroState.advanceState(shouldRecord: true, endedNaturally: true, endTime: endTime) // we finish out our state
             
             secondsLeft = 0 // technically all the time here was used up
             
@@ -106,7 +106,7 @@ class BackgroundManager {
                     endTime = deltaDate.end
                     
                     // we actually advance the state
-                    pomodoroState.advanceState(endedNaturally: true, endTime: endTime)
+                    pomodoroState.advanceState(shouldRecord: true, endedNaturally: true, endTime: endTime)
                     
                 }
                 
@@ -227,7 +227,7 @@ class BackgroundManager {
         sBreakNotification.sound = UNNotificationSound.default()
 
         let lBreakNotification = UNMutableNotificationContent()
-        lBreakNotification.body = "long break finished"
+        lBreakNotification.body = "Long break finished"
         lBreakNotification.sound = UNNotificationSound.default()
         
         // we copy our pomodoro
@@ -253,7 +253,7 @@ class BackgroundManager {
         // we advance the state of our copied pomodoro because we've scheduled a notification for it
         // because we're kinda advancing a dummy pomodoro object we insert endedNaturally as false and set
         // some rando value for endTime because it won't be recorded
-        cpPomodoro.advanceState(endedNaturally: false, endTime: Date())
+        cpPomodoro.advanceState(shouldRecord: false, endedNaturally: false, endTime: Date())
         
         // we make a copy of our timeRemaining for future use
         var cumulTime = timeRemaining
@@ -298,7 +298,7 @@ class BackgroundManager {
             }
             
             // we advance our pomodoro to set the next notification
-            cpPomodoro.advanceState(endedNaturally: false, endTime: Date())
+            cpPomodoro.advanceState(shouldRecord: false, endedNaturally: true, endTime: Date())
             
         }
 
@@ -306,6 +306,17 @@ class BackgroundManager {
     
     // deschedules all the notifications remaining when app is coming out of background
     func descheduleNotifications() {
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { requests in
+        for request in requests {
+            
+            var timeInterval = request.trigger as! UNTimeIntervalNotificationTrigger
+            var time = timeInterval.timeInterval
+            
+            print("Time: \(time) -- Body: \(request.content.body)")
+        }
+        })
+        
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
