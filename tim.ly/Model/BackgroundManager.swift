@@ -306,17 +306,6 @@ class BackgroundManager {
     
     // deschedules all the notifications remaining when app is coming out of background
     func descheduleNotifications() {
-        
-        UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { requests in
-        for request in requests {
-            
-            var timeInterval = request.trigger as! UNTimeIntervalNotificationTrigger
-            var time = timeInterval.timeInterval
-            
-            print("Time: \(time) -- Body: \(request.content.body)")
-        }
-        })
-        
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
