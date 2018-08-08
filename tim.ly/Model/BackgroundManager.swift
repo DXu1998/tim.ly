@@ -253,7 +253,7 @@ class BackgroundManager {
         // we advance the state of our copied pomodoro because we've scheduled a notification for it
         // because we're kinda advancing a dummy pomodoro object we insert endedNaturally as false and set
         // some rando value for endTime because it won't be recorded
-        cpPomodoro.advanceState(shouldRecord: false, endedNaturally: false, endTime: Date())
+        cpPomodoro.advanceState(shouldRecord: false, endedNaturally: true, endTime: Date())
         
         // we make a copy of our timeRemaining for future use
         var cumulTime = timeRemaining
